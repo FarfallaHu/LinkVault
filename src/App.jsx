@@ -16,7 +16,8 @@ import {
   Check, 
   AlertCircle, 
   Info,
-  Bookmark
+  Bookmark,
+  RefreshCw
 } from 'lucide-react';
 
 // Default initial bookmarks in English
@@ -160,6 +161,8 @@ function App() {
   const [filterMode, setFilterMode] = useState('all'); // 'all' or 'starred'
   const [toastList, setToastList] = useState([]);
   const [editingLink, setEditingLink] = useState(null);
+  const [showTokenModal, setShowTokenModal] = useState(false);
+  const [tokenInput, setTokenInput] = useState('');
   
   // URL Input State
   const [urlInput, setUrlInput] = useState('');
@@ -171,6 +174,7 @@ function App() {
   });
 
   const dialogRef = useRef(null);
+  const tokenDialogRef = useRef(null);
 
   // --- Effects ---
   useEffect(() => {
@@ -181,16 +185,25 @@ function App() {
   useEffect(() => {
     const fetchServerLinks = async () => {
       try {
-        const response = await fetch('./links.json');
+        // Try fetching raw GitHub file content for real-time updates across multiple hosting platforms
+        const response = await fetch(`https://raw.githubusercontent.com/FarfallaHu/LinkVault/main/public/links.json?t=${Date.now()}`);
+        let data;
         if (response.ok) {
-          const serverLinks = await response.json();
-          if (Array.isArray(serverLinks)) {
-            setLinks((prevLinks) => {
-              const serverUrls = new Set(serverLinks.map(l => l.url.toLowerCase()));
-              const localOnlyLinks = prevLinks.filter(l => !serverUrls.has(l.url.toLowerCase()));
-              return [...serverLinks, ...localOnlyLinks];
-            });
+          data = await response.json();
+        } else {
+          // Fallback to local server paths
+          const localResponse = await fetch('./links.json');
+          if (localResponse.ok) {
+            data = await localResponse.json();
           }
+        }
+        
+        if (data && Array.isArray(data)) {
+          setLinks((prevLinks) => {
+            const serverUrls = new Set(data.map(l => l.url.toLowerCase()));
+            const localOnlyLinks = prevLinks.filter(l => !serverUrls.has(l.url.toLowerCase()));
+            return [...data, ...localOnlyLinks];
+          });
         }
       } catch (err) {
         console.warn('Could not fetch server links.json, falling back to local storage.');
@@ -215,6 +228,98 @@ function App() {
       dialogRef.current?.close();
     }
   }, [editingLink]);
+
+  useEffect(() => {
+    if (showTokenModal) {
+      tokenDialogRef.current?.showModal();
+      const savedToken = localStorage.getItem('linkvault_github_token') || '';
+      setTokenInput(savedToken);
+    } else {
+      tokenDialogRef.current?.close();
+    }
+  }, [showTokenModal]);
+
+  // --- Cloud Sync Logic ---
+  const handleCloudSync = async () => {
+    const token = localStorage.getItem('linkvault_github_token');
+    if (!token) {
+      setShowTokenModal(true);
+      return;
+    }
+
+    addToast('Syncing with GitHub...', 'info');
+
+    try {
+      // 1. Get current SHA of public/links.json to replace it
+      const getRes = await fetch(
+        'https://api.github.com/repos/FarfallaHu/LinkVault/contents/public/links.json',
+        {
+          headers: {
+            'Authorization': `token ${token}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        }
+      );
+
+      let sha = '';
+      if (getRes.ok) {
+        const fileData = await getRes.json();
+        sha = fileData.sha;
+      }
+
+      // 2. Put updated JSON file back to GitHub
+      const jsonString = JSON.stringify(links, null, 2);
+      const contentBase64 = btoa(unescape(encodeURIComponent(jsonString)));
+
+      const putRes = await fetch(
+        'https://api.github.com/repos/FarfallaHu/LinkVault/contents/public/links.json',
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: 'update links via LinkVault CMS',
+            content: contentBase64,
+            sha: sha || undefined
+          })
+         }
+      );
+
+      if (putRes.ok) {
+        addToast('Synced successfully! Changes are live.', 'success');
+      } else {
+        const errData = await putRes.json();
+        if (putRes.status === 401 || putRes.status === 403) {
+          addToast('Session expired. Please check your GitHub token.', 'error');
+          localStorage.removeItem('linkvault_github_token');
+          setShowTokenModal(true);
+        } else {
+          addToast(`Sync failed: ${errData.message || 'Unknown error'}`, 'error');
+        }
+      }
+    } catch (err) {
+      addToast('Network error during sync', 'error');
+    }
+  };
+
+  const handleSaveToken = (e) => {
+    e.preventDefault();
+    const cleanToken = tokenInput.trim();
+    if (!cleanToken) {
+      addToast('Token cannot be empty', 'error');
+      return;
+    }
+    localStorage.setItem('linkvault_github_token', cleanToken);
+    setShowTokenModal(false);
+    addToast('GitHub Token saved locally', 'success');
+    
+    setTimeout(() => {
+      handleCloudSync();
+    }, 500);
+  };
 
   // --- Toast Handler ---
   const addToast = (message, type = 'success') => {
@@ -734,6 +839,83 @@ function App() {
         )}
       </dialog>
 
+      {/* GitHub Token Setup Modal */}
+      <dialog 
+        ref={tokenDialogRef} 
+        onClick={(e) => {
+          if (e.target === tokenDialogRef.current) {
+            const rect = tokenDialogRef.current.getBoundingClientRect();
+            const isInside = (
+              rect.top <= e.clientY &&
+              e.clientY <= rect.top + rect.height &&
+              rect.left <= e.clientX &&
+              e.clientX <= rect.left + rect.width
+            );
+            if (!isInside) {
+              setShowTokenModal(false);
+            }
+          }
+        }}
+        aria-labelledby="tokenModalTitle"
+      >
+        <div className="modal-header">
+          <h3 id="tokenModalTitle" className="modal-title">Cloud Sync Settings</h3>
+          <button className="modal-close-btn" onClick={() => setShowTokenModal(false)}>
+            <X size={18} />
+          </button>
+        </div>
+        
+        <form onSubmit={handleSaveToken}>
+          <div className="modal-body">
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.85rem', lineHeight: '1.4' }}>
+              To save links directly to your website without downloading files, enter your GitHub Personal Access Token (PAT).
+            </p>
+            <div className="form-group">
+              <label className="form-label">GitHub Access Token</label>
+              <input
+                type="password"
+                className="form-input"
+                value={tokenInput}
+                onChange={(e) => setTokenInput(e.target.value)}
+                placeholder="ghp_..."
+                required
+              />
+            </div>
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.4rem', lineHeight: '1.3' }}>
+              * Security Note: The token is saved strictly inside your browser's private local storage. It is never sent to any server except the official GitHub API.
+            </p>
+          </div>
+
+          <div className="modal-footer">
+            {localStorage.getItem('linkvault_github_token') && (
+              <button 
+                type="button" 
+                className="btn-secondary" 
+                style={{ color: 'var(--danger)', marginRight: 'auto' }}
+                onClick={() => {
+                  localStorage.removeItem('linkvault_github_token');
+                  setTokenInput('');
+                  setShowTokenModal(false);
+                  addToast('Token removed', 'info');
+                }}
+              >
+                Remove Token
+              </button>
+            )}
+            <button 
+              type="button" 
+              className="btn-secondary" 
+              onClick={() => setShowTokenModal(false)}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="btn-primary">
+              Save & Sync
+            </button>
+          </div>
+        </form>
+      </dialog>
+
       {/* Bottom Data Center */}
       <footer className="app-footer">
         <div className="settings-bar">
@@ -747,6 +929,11 @@ function App() {
           </div>
 
           <div className="settings-actions">
+            <button className="btn-secondary" onClick={handleCloudSync} style={{ color: 'var(--primary)' }}>
+              <RefreshCw size={13} />
+              Sync to Cloud
+            </button>
+
             <label className="btn-secondary" style={{ cursor: 'pointer' }}>
               <Upload size={13} />
               Import Backup
