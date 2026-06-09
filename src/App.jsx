@@ -177,6 +177,28 @@ function App() {
     localStorage.setItem('linkvault_links', JSON.stringify(links));
   }, [links]);
 
+  // Fetch links.json from server on mount and merge with local changes
+  useEffect(() => {
+    const fetchServerLinks = async () => {
+      try {
+        const response = await fetch('./links.json');
+        if (response.ok) {
+          const serverLinks = await response.json();
+          if (Array.isArray(serverLinks)) {
+            setLinks((prevLinks) => {
+              const serverUrls = new Set(serverLinks.map(l => l.url.toLowerCase()));
+              const localOnlyLinks = prevLinks.filter(l => !serverUrls.has(l.url.toLowerCase()));
+              return [...serverLinks, ...localOnlyLinks];
+            });
+          }
+        }
+      } catch (err) {
+        console.warn('Could not fetch server links.json, falling back to local storage.');
+      }
+    };
+    fetchServerLinks();
+  }, []);
+
   useEffect(() => {
     localStorage.setItem('linkvault_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
