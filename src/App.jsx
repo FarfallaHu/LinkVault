@@ -17,7 +17,9 @@ import {
   AlertCircle, 
   Info,
   Bookmark,
-  RefreshCw
+  RefreshCw,
+  Lock,
+  Unlock
 } from 'lucide-react';
 
 // Default initial bookmarks in English
@@ -164,6 +166,15 @@ function App() {
   const [showTokenModal, setShowTokenModal] = useState(false);
   const [tokenInput, setTokenInput] = useState('');
   
+  // Admin Authentication State
+  const [isAdmin, setIsAdmin] = useState(() => {
+    return localStorage.getItem('linkvault_is_admin') === 'true';
+  });
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
   // URL Input State
   const [urlInput, setUrlInput] = useState('');
 
@@ -175,6 +186,7 @@ function App() {
 
   const dialogRef = useRef(null);
   const tokenDialogRef = useRef(null);
+  const loginDialogRef = useRef(null);
 
   // --- Effects ---
   useEffect(() => {
@@ -201,7 +213,8 @@ function App() {
         if (data && Array.isArray(data)) {
           setLinks((prevLinks) => {
             const serverUrls = new Set(data.map(l => l.url.toLowerCase()));
-            const localOnlyLinks = prevLinks.filter(l => !serverUrls.has(l.url.toLowerCase()));
+            const serverIds = new Set(data.map(l => l.id));
+            const localOnlyLinks = prevLinks.filter(l => !serverUrls.has(l.url.toLowerCase()) && !serverIds.has(l.id));
             return [...data, ...localOnlyLinks];
           });
         }
@@ -239,8 +252,23 @@ function App() {
     }
   }, [showTokenModal]);
 
+  useEffect(() => {
+    if (showLoginModal) {
+      loginDialogRef.current?.showModal();
+      setLoginEmail('');
+      setLoginPassword('');
+      setLoginError('');
+    } else {
+      loginDialogRef.current?.close();
+    }
+  }, [showLoginModal]);
+
   // --- Cloud Sync Logic ---
   const handleCloudSync = async () => {
+    if (!isAdmin) {
+      addToast('Admin login required to sync to cloud', 'error');
+      return;
+    }
     const token = localStorage.getItem('linkvault_github_token');
     if (!token) {
       setShowTokenModal(true);
@@ -321,6 +349,42 @@ function App() {
     }, 500);
   };
 
+  // --- Admin Login Actions ---
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    if (loginEmail.trim().toLowerCase() === 'farfallahu@gmail.com' && loginPassword === 'Hudie1022') {
+      setIsAdmin(true);
+      localStorage.setItem('linkvault_is_admin', 'true');
+      setShowLoginModal(false);
+      addToast('Welcome back, Farfalla Hu!', 'success');
+    } else {
+      setLoginError('Invalid email or password.');
+    }
+  };
+
+  const handleLogout = () => {
+    if (confirm('Are you sure you want to log out as Admin?')) {
+      setIsAdmin(false);
+      localStorage.removeItem('linkvault_is_admin');
+      addToast('Logged out of Admin session', 'info');
+    }
+  };
+
+  const handleLoginDialogClick = (e) => {
+    if (e.target === loginDialogRef.current) {
+      const rect = loginDialogRef.current.getBoundingClientRect();
+      const isInside = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInside) {
+        setShowLoginModal(false);
+      }
+    }
+  };
+
   // --- Toast Handler ---
   const addToast = (message, type = 'success') => {
     const id = Date.now().toString() + Math.random().toString(36).substr(2, 5);
@@ -382,6 +446,10 @@ function App() {
   // Add Link
   const handleAddSubmit = (e) => {
     e.preventDefault();
+    if (!isAdmin) {
+      addToast('Admin login required', 'error');
+      return;
+    }
     const cleanUrl = sanitizeUrl(urlInput);
     if (!cleanUrl) {
       addToast('Please enter a valid URL', 'error');
@@ -451,6 +519,10 @@ function App() {
 
   // Delete Link
   const handleDeleteLink = (id) => {
+    if (!isAdmin) {
+      addToast('Admin login required', 'error');
+      return;
+    }
     const link = links.find(l => l.id === id);
     if (confirm(`Delete "${link?.title || 'this link'}"?`)) {
       setLinks((prev) => prev.filter((l) => l.id !== id));
@@ -461,6 +533,10 @@ function App() {
   // Edit Link Details
   const handleEditSubmit = (e) => {
     e.preventDefault();
+    if (!isAdmin) {
+      addToast('Admin login required', 'error');
+      return;
+    }
     const cleanUrl = sanitizeUrl(modalInput.url);
     if (!cleanUrl) {
       addToast('Invalid URL', 'error');
@@ -485,6 +561,10 @@ function App() {
 
   // Export to JSON
   const handleExportData = () => {
+    if (!isAdmin) {
+      addToast('Admin login required', 'error');
+      return;
+    }
     try {
       const dataStr = JSON.stringify(links, null, 2);
       const blob = new Blob([dataStr], { type: 'application/json' });
@@ -504,6 +584,10 @@ function App() {
 
   // Import from JSON File
   const handleImportData = (e) => {
+    if (!isAdmin) {
+      addToast('Admin login required', 'error');
+      return;
+    }
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -543,6 +627,10 @@ function App() {
 
   // Clear All
   const handleClearAll = () => {
+    if (!isAdmin) {
+      addToast('Admin login required', 'error');
+      return;
+    }
     if (confirm('Warning: This will permanently delete all your links. Are you sure?')) {
       setLinks([]);
       addToast('All data cleared', 'info');
@@ -612,6 +700,25 @@ function App() {
           <div className="stats-badge">
             <span>{links.length} bookmarks</span>
           </div>
+          {isAdmin ? (
+            <button 
+              className="btn-icon"
+              onClick={handleLogout}
+              title="Log Out (Admin Mode)"
+              aria-label="Log out admin"
+            >
+              <Unlock size={16} />
+            </button>
+          ) : (
+            <button 
+              className="btn-icon"
+              onClick={() => setShowLoginModal(true)}
+              title="Admin Log In"
+              aria-label="Admin log in"
+            >
+              <Lock size={16} />
+            </button>
+          )}
           <button 
             className="btn-icon"
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
@@ -631,30 +738,32 @@ function App() {
         </section>
 
         {/* Minimal Adding Card */}
-        <section className="quick-import-card">
-          <form onSubmit={handleAddSubmit}>
-            <div className="paste-action-wrapper">
-              <div className="paste-input-container">
-                <Link2 className="paste-input-icon" />
-                <input
-                  type="text"
-                  className="url-input"
-                  placeholder="Paste URL here..."
-                  value={urlInput}
-                  onChange={(e) => setUrlInput(e.target.value)}
-                />
+        {isAdmin && (
+          <section className="quick-import-card">
+            <form onSubmit={handleAddSubmit}>
+              <div className="paste-action-wrapper">
+                <div className="paste-input-container">
+                  <Link2 className="paste-input-icon" />
+                  <input
+                    type="text"
+                    className="url-input"
+                    placeholder="Paste URL here..."
+                    value={urlInput}
+                    onChange={(e) => setUrlInput(e.target.value)}
+                  />
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className="btn-primary"
+                >
+                  <Plus size={16} />
+                  Add
+                </button>
               </div>
-              
-              <button 
-                type="submit" 
-                className="btn-primary"
-              >
-                <Plus size={16} />
-                Add
-              </button>
-            </div>
-          </form>
-        </section>
+            </form>
+          </section>
+        )}
 
         {/* Minimal Search & Filter Pills */}
         <section className="search-filter-section">
@@ -734,20 +843,24 @@ function App() {
                     >
                       <Star size={14} fill={link.starred ? 'var(--star)' : 'none'} />
                     </button>
-                    <button
-                      className="btn-card-action"
-                      onClick={() => setEditingLink(link)}
-                      title="Edit Details"
-                    >
-                      <Edit3 size={14} />
-                    </button>
-                    <button
-                      className="btn-card-action btn-delete"
-                      onClick={() => handleDeleteLink(link.id)}
-                      title="Delete Bookmark"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    {isAdmin && (
+                      <>
+                        <button
+                          className="btn-card-action"
+                          onClick={() => setEditingLink(link)}
+                          title="Edit Details"
+                        >
+                          <Edit3 size={14} />
+                        </button>
+                        <button
+                          className="btn-card-action btn-delete"
+                          onClick={() => handleDeleteLink(link.id)}
+                          title="Delete Bookmark"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </>
+                    )}
                     <a
                       href={link.url}
                       target="_blank"
@@ -781,6 +894,68 @@ function App() {
           </section>
         )}
       </main>
+
+      {/* Admin Login Dialog */}
+      <dialog 
+        ref={loginDialogRef} 
+        onClick={handleLoginDialogClick}
+        aria-labelledby="loginModalTitle"
+      >
+        <div className="modal-header">
+          <h3 id="loginModalTitle" className="modal-title">Admin Login</h3>
+          <button className="modal-close-btn" onClick={() => setShowLoginModal(false)}>
+            <X size={18} />
+          </button>
+        </div>
+        
+        <form onSubmit={handleLoginSubmit}>
+          <div className="modal-body">
+            {loginError && (
+              <div className="form-error">
+                <AlertCircle size={14} />
+                <span>{loginError}</span>
+              </div>
+            )}
+            
+            <div className="form-group">
+              <label className="form-label">Email Address</label>
+              <input
+                type="email"
+                className="form-input"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+                placeholder="farfallahu@gmail.com"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Password</label>
+              <input
+                type="password"
+                className="form-input"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="modal-footer">
+            <button 
+              type="button" 
+              className="btn-secondary" 
+              onClick={() => setShowLoginModal(false)}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="btn-primary">
+              Log In
+            </button>
+          </div>
+        </form>
+      </dialog>
 
       {/* Edit Dialog Modal (URL and Title only, ultra-clean) */}
       <dialog 
@@ -928,33 +1103,35 @@ function App() {
             </a>
           </div>
 
-          <div className="settings-actions">
-            <button className="btn-secondary" onClick={handleCloudSync} style={{ color: 'var(--primary)' }}>
-              <RefreshCw size={13} />
-              Sync to Cloud
-            </button>
+          {isAdmin && (
+            <div className="settings-actions">
+              <button className="btn-secondary" onClick={handleCloudSync} style={{ color: 'var(--primary)' }}>
+                <RefreshCw size={13} />
+                Sync to Cloud
+              </button>
 
-            <label className="btn-secondary" style={{ cursor: 'pointer' }}>
-              <Upload size={13} />
-              Import Backup
-              <input 
-                type="file" 
-                accept=".json" 
-                style={{ display: 'none' }} 
-                onChange={handleImportData} 
-              />
-            </label>
-            
-            <button className="btn-secondary" onClick={handleExportData}>
-              <Download size={13} />
-              Export Backup
-            </button>
-            
-            <button className="btn-secondary" onClick={handleClearAll} style={{ color: 'var(--danger)', borderColor: 'rgba(255, 59, 48, 0.2)' }}>
-              <Trash2 size={13} />
-              Clear All
-            </button>
-          </div>
+              <label className="btn-secondary" style={{ cursor: 'pointer' }}>
+                <Upload size={13} />
+                Import Backup
+                <input 
+                  type="file" 
+                  accept=".json" 
+                  style={{ display: 'none' }} 
+                  onChange={handleImportData} 
+                />
+              </label>
+              
+              <button className="btn-secondary" onClick={handleExportData}>
+                <Download size={13} />
+                Export Backup
+              </button>
+              
+              <button className="btn-secondary" onClick={handleClearAll} style={{ color: 'var(--danger)', borderColor: 'rgba(255, 59, 48, 0.2)' }}>
+                <Trash2 size={13} />
+                Clear All
+              </button>
+            </div>
+          )}
         </div>
       </footer>
     </div>

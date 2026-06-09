@@ -1023,3 +1023,20 @@ dialog::backdrop {
     gap: 0.5rem;
   }
 }
+
+/* Admin Auth Custom Styling */
+.form-error {
+  color: var(--danger);
+  font-size: 0.82rem;
+  background-color: var(--danger-light);
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  margin-top: -0.25rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 59, 48, 0.15);
+}
+
