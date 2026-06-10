@@ -435,5 +435,19 @@
     "title": "Canva",
     "starred": true,
     "createdAt": "2026-06-10T04:35:37.550Z"
+  },
+  {
+    "id": "1781069264902",
+    "url": "https://docs.google.com/spreadsheets/u/0/",
+    "title": "Docs",
+    "starred": false,
+    "createdAt": "2026-06-10T05:27:44.902Z"
+  },
+  {
+    "id": "1781069234445",
+    "url": "https://docs.google.com/document/u/0/",
+    "title": "Docs",
+    "starred": false,
+    "createdAt": "2026-06-10T05:27:14.445Z"
   }
 ]
