@@ -1,16 +1,44 @@
 [
   {
+    "id": "1781065012471",
+    "url": "https://linear.app/",
+    "title": "Linear",
+    "starred": false,
+    "createdAt": "2026-06-10T04:16:52.471Z"
+  },
+  {
+    "id": "1781064991371",
+    "url": "https://www.midjourney.com/",
+    "title": "Midjourney",
+    "starred": false,
+    "createdAt": "2026-06-10T04:16:31.371Z"
+  },
+  {
+    "id": "1781064966523",
+    "url": "https://www.figma.com/",
+    "title": "Figma",
+    "starred": false,
+    "createdAt": "2026-06-10T04:16:06.523Z"
+  },
+  {
+    "id": "1781064936822",
+    "url": "https://www.awwwards.com/",
+    "title": "Awwwards",
+    "starred": false,
+    "createdAt": "2026-06-10T04:15:36.822Z"
+  },
+  {
     "id": "1",
     "url": "https://github.com",
     "title": "GitHub",
-    "starred": true,
+    "starred": false,
     "createdAt": "2026-06-04T22:00:00.000Z"
   },
   {
     "id": "2",
     "url": "https://react.dev",
     "title": "React",
-    "starred": true,
+    "starred": false,
     "createdAt": "2026-06-06T22:00:00.000Z"
   },
   {
@@ -48,7 +76,7 @@
     "desc": "",
     "category": "uncategorized",
     "tags": [],
-    "starred": false,
+    "starred": true,
     "createdAt": "2026-06-09T21:47:39.069Z"
   }
 ]
