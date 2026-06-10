@@ -697,9 +697,6 @@ function App() {
         </div>
         
         <div className="header-actions">
-          <div className="stats-badge">
-            <span>{links.length} bookmarks</span>
-          </div>
           {isAdmin ? (
             <button 
               className="btn-icon"
