@@ -1097,7 +1097,7 @@ function App() {
           <div className="footer-credits">
             <span>Powered by React & LocalStorage</span>
             <span>•</span>
-            <span>Made with 🤍 by</span>
+            <span>Made with 💗 by</span>
             <a href="https://farfallahu.com" target="_blank" rel="noopener noreferrer" className="credit-link">
               Farfalla Hu
             </a>
