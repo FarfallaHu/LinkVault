@@ -18,8 +18,8 @@ import {
   Info,
   Bookmark,
   RefreshCw,
-  Lock,
-  Unlock
+  LogIn,
+  LogOut
 } from 'lucide-react';
 
 // Default initial bookmarks in English
@@ -707,7 +707,7 @@ function App() {
               title="Log Out (Admin Mode)"
               aria-label="Log out admin"
             >
-              <Unlock size={16} />
+              <LogOut size={16} />
             </button>
           ) : (
             <button 
@@ -716,7 +716,7 @@ function App() {
               title="Admin Log In"
               aria-label="Admin log in"
             >
-              <Lock size={16} />
+              <LogIn size={16} />
             </button>
           )}
           <button 
