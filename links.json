@@ -1,16 +1,93 @@
 [
   {
+    "id": "1781068200690",
+    "url": "https://www.bilibili.com/",
+    "title": "Bilibili",
+    "starred": false,
+    "createdAt": "2026-06-10T05:10:00.690Z"
+  },
+  {
+    "id": "1781068151515",
+    "url": "https://openai.com/index/chatgpt/",
+    "title": "Openai",
+    "starred": false,
+    "createdAt": "2026-06-10T05:09:11.515Z"
+  },
+  {
+    "id": "1781068131839",
+    "url": "https://www.perplexity.ai/",
+    "title": "Perplexity",
+    "starred": false,
+    "createdAt": "2026-06-10T05:08:51.839Z"
+  },
+  {
+    "id": "1781068119976",
+    "url": "https://logodiffusion.com/",
+    "title": "Logodiffusion",
+    "starred": false,
+    "createdAt": "2026-06-10T05:08:39.976Z"
+  },
+  {
+    "id": "1781068112365",
+    "url": "https://www.deepseek.com/",
+    "title": "Deepseek",
+    "starred": false,
+    "createdAt": "2026-06-10T05:08:32.365Z"
+  },
+  {
+    "id": "1781068082954",
+    "url": "https://tool.aiofchina.com/",
+    "title": "Tool",
+    "starred": true,
+    "createdAt": "2026-06-10T05:08:02.954Z"
+  },
+  {
+    "id": "1781068032197",
+    "url": "https://sheep.tfbugs.com/",
+    "title": "Sheep",
+    "starred": false,
+    "createdAt": "2026-06-10T05:07:12.197Z"
+  },
+  {
+    "id": "1781065012471",
+    "url": "https://linear.app/",
+    "title": "Linear",
+    "starred": false,
+    "createdAt": "2026-06-10T04:16:52.471Z"
+  },
+  {
+    "id": "1781064991371",
+    "url": "https://www.midjourney.com/",
+    "title": "Midjourney",
+    "starred": false,
+    "createdAt": "2026-06-10T04:16:31.371Z"
+  },
+  {
+    "id": "1781064966523",
+    "url": "https://www.figma.com/",
+    "title": "Figma",
+    "starred": false,
+    "createdAt": "2026-06-10T04:16:06.523Z"
+  },
+  {
+    "id": "1781064936822",
+    "url": "https://www.awwwards.com/",
+    "title": "Awwwards",
+    "starred": false,
+    "createdAt": "2026-06-10T04:15:36.822Z"
+  },
+  {
     "id": "1",
     "url": "https://github.com",
     "title": "GitHub",
-    "starred": true,
+    "starred": false,
     "createdAt": "2026-06-04T22:00:00.000Z"
   },
   {
     "id": "2",
     "url": "https://react.dev",
     "title": "React",
-    "starred": true,
+    "starred": false,
     "createdAt": "2026-06-06T22:00:00.000Z"
   },
   {
@@ -48,7 +125,210 @@
     "desc": "",
     "category": "uncategorized",
     "tags": [],
-    "starred": false,
+    "starred": true,
     "createdAt": "2026-06-09T21:47:39.069Z"
+  },
+  {
+    "id": "1781067845189",
+    "url": "https://web.goodnotes.com/login",
+    "title": "Web",
+    "starred": false,
+    "createdAt": "2026-06-10T05:04:05.189Z"
+  },
+  {
+    "id": "1781067819930",
+    "url": "https://www.goodnotes.com/",
+    "title": "Goodnotes",
+    "starred": false,
+    "createdAt": "2026-06-10T05:03:39.930Z"
+  },
+  {
+    "id": "1781067774249",
+    "url": "https://www.typeform.com/",
+    "title": "Typeform",
+    "starred": false,
+    "createdAt": "2026-06-10T05:02:54.249Z"
+  },
+  {
+    "id": "1781067746586",
+    "url": "https://www.loom.com/",
+    "title": "Loom",
+    "starred": false,
+    "createdAt": "2026-06-10T05:02:26.586Z"
+  },
+  {
+    "id": "1781067716902",
+    "url": "https://21st.dev/",
+    "title": "21st",
+    "starred": false,
+    "createdAt": "2026-06-10T05:01:56.902Z"
+  },
+  {
+    "id": "1781067700071",
+    "url": "https://v0.app/farfallahu",
+    "title": "V0",
+    "starred": false,
+    "createdAt": "2026-06-10T05:01:40.071Z"
+  },
+  {
+    "id": "1781067626798",
+    "url": "https://v0.app/@kerroudj",
+    "title": "V0@kerroudj",
+    "starred": false,
+    "createdAt": "2026-06-10T05:00:26.798Z"
+  },
+  {
+    "id": "1781067581046",
+    "url": "https://www.craft.do/",
+    "title": "Craft",
+    "starred": false,
+    "createdAt": "2026-06-10T04:59:41.046Z"
+  },
+  {
+    "id": "1781067570213",
+    "url": "https://cleanshot.com/",
+    "title": "Cleanshot",
+    "starred": false,
+    "createdAt": "2026-06-10T04:59:30.213Z"
+  },
+  {
+    "id": "1781067534743",
+    "url": "https://express.adobe.com/",
+    "title": "Express",
+    "starred": false,
+    "createdAt": "2026-06-10T04:58:54.743Z"
+  },
+  {
+    "id": "1781067522830",
+    "url": "https://acrobat.adobe.com/",
+    "title": "Acrobat",
+    "starred": false,
+    "createdAt": "2026-06-10T04:58:42.830Z"
+  },
+  {
+    "id": "1781067493675",
+    "url": "https://www.etsy.com/",
+    "title": "Etsy",
+    "starred": false,
+    "createdAt": "2026-06-10T04:58:13.675Z"
+  },
+  {
+    "id": "1781067481225",
+    "url": "https://www.amazon.com/",
+    "title": "Amazon",
+    "starred": false,
+    "createdAt": "2026-06-10T04:58:01.225Z"
+  },
+  {
+    "id": "1781067442226",
+    "url": "https://izihun.com/",
+    "title": "Izihun",
+    "starred": false,
+    "createdAt": "2026-06-10T04:57:22.226Z"
+  },
+  {
+    "id": "1781067403716",
+    "url": "https://webflow.com/",
+    "title": "Webflow",
+    "starred": false,
+    "createdAt": "2026-06-10T04:56:43.716Z"
+  },
+  {
+    "id": "1781067369741",
+    "url": "https://www.behance.net/",
+    "title": "Behance",
+    "starred": false,
+    "createdAt": "2026-06-10T04:56:09.741Z"
+  },
+  {
+    "id": "1781067351123",
+    "url": "https://dribbble.com/",
+    "title": "Dribbble",
+    "starred": false,
+    "createdAt": "2026-06-10T04:55:51.123Z"
+  },
+  {
+    "id": "1781067319339",
+    "url": "https://mobbin.com/",
+    "title": "Mobbin",
+    "starred": false,
+    "createdAt": "2026-06-10T04:55:19.339Z"
+  },
+  {
+    "id": "1781067297191",
+    "url": "https://www.fiverr.com/",
+    "title": "Fiverr",
+    "starred": false,
+    "createdAt": "2026-06-10T04:54:57.191Z"
+  },
+  {
+    "id": "1781067275005",
+    "url": "https://music.youtube.com/",
+    "title": "Music",
+    "starred": true,
+    "createdAt": "2026-06-10T04:54:35.005Z"
+  },
+  {
+    "id": "1781067213035",
+    "url": "https://unsplash.com/",
+    "title": "Unsplash",
+    "starred": false,
+    "createdAt": "2026-06-10T04:53:33.035Z"
+  },
+  {
+    "id": "1781067197185",
+    "url": "https://www.pinterest.com/",
+    "title": "Pinterest",
+    "starred": false,
+    "createdAt": "2026-06-10T04:53:17.185Z"
+  },
+  {
+    "id": "1781067145021",
+    "url": "https://app.envato.com/",
+    "title": "envato",
+    "starred": false,
+    "createdAt": "2026-06-10T04:52:25.021Z"
+  },
+  {
+    "id": "1781067075384",
+    "url": "https://land-book.com/",
+    "title": "Land-book",
+    "starred": false,
+    "createdAt": "2026-06-10T04:51:15.384Z"
+  },
+  {
+    "id": "1781067049316",
+    "url": "https://www.nickzoutendijk.nl/",
+    "title": "Nickzoutendijk",
+    "starred": false,
+    "createdAt": "2026-06-10T04:50:49.316Z"
+  },
+  {
+    "id": "1781066994431",
+    "url": "https://lkssite.vip/",
+    "title": "Lkssite",
+    "starred": false,
+    "createdAt": "2026-06-10T04:49:54.431Z"
+  },
+  {
+    "id": "1781066779647",
+    "url": "https://lifestylebusiness.com/academy/",
+    "title": "Lifestylebusiness",
+    "starred": false,
+    "createdAt": "2026-06-10T04:46:19.647Z"
+  },
+  {
+    "id": "1781066752249",
+    "url": "https://www.chase.com/",
+    "title": "Chase",
+    "starred": false,
+    "createdAt": "2026-06-10T04:45:52.249Z"
+  },
+  {
+    "id": "1781066137550",
+    "url": "https://www.canva.com/",
+    "title": "Canva",
+    "starred": true,
+    "createdAt": "2026-06-10T04:35:37.550Z"
   }
 ]
