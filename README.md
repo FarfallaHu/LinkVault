@@ -1,109 +1,104 @@
-# LinkVault | 极简网页链接收藏夹
+# LinkVault | Minimalist Bookmarks Manager
 
-LinkVault 是一款极简大方的网址收藏与管理工具。采用现代 Web 界面设计，包含毛玻璃（Glassmorphism）卡片效果、精美微动画与深浅色模式切换。应用数据安全地保存在浏览器本地，省去了后端数据库搭建的复杂性，并提供了便捷的一键导出备份与导入功能。
+LinkVault is an elegant, clean, and modern bookmark collector and manager. Designed with a focus on premium aesthetics, it features a glassmorphism interface, smooth micro-animations, responsive layout, and automatic theme synchronization (light/dark mode). Your bookmark data is securely stored locally inside the browser's `localStorage`, requiring no complex database backend. It also offers cloud synchronization via GitHub API and local import/export file options.
 
-## ✨ 特色功能
+## ✨ Core Features
 
-1. **一键粘贴并添加**：调用浏览器 Clipboard API。当您复制任何网址后，只需在页面点击一个按钮，应用即可自动读取并解析该链接，自动解析出域名并归档。
-2. **磨砂玻璃拟态设计**：极简、现代的设计语言，适配任何尺寸屏幕（响应式布局）。
-3. **强大的分类与搜索**：内置多种预设分类（工作/学习、科技/开发、工具/效率、娱乐/休闲），支持星标（收藏）和关键字联想搜索。
-4. **前端本地化存储**：无后台、无复杂配置，数据自动持久化到 `localStorage` 中。
-5. **轻松备份与恢复**：支持一键导出数据为 `.json` 文件，并能随时通过该文件导入恢复。
+1. **One-Click Paste & Add**: Integrates with the browser Clipboard API. Copy any URL, click the paste button, and LinkVault will capture, parse, and save it instantly.
+2. **Glassmorphism Design**: Minimalist and state-of-the-art UI guidelines, fully responsive and styled beautifully for mobile, tablet, and desktop screens.
+3. **Advanced Filtering & Search**: Includes keyword search matching and instant filtering for favorited (starred) bookmarks.
+4. **Local and Offline First**: Fully client-side storage leveraging `localStorage` for rapid response and offline capability.
+5. **Secure Backups**: Export your entire collection into a `.json` backup file, and restore it anytime with the file import utility.
+6. **Admin Authorization**: Hide write actions, settings, and cloud synchronization buttons behind a secure client-side admin password.
 
 ---
 
-## 🛠️ 本地开发运行
+## 🛠️ Local Development
 
-本项目基于 **Node.js** 的 **Vite + React** 框架构建。
+This project is built using the **Vite + React** framework on **Node.js**.
 
-### 1. 准备工作
-确保本地已安装 Node.js 和 npm。
+### 1. Prerequisites
+Ensure you have Node.js and npm installed on your machine.
 
-### 2. 安装依赖
-在项目根目录下执行：
+### 2. Install Dependencies
+Run the following command in the project root directory:
 ```bash
 npm install
 ```
 
-### 3. 启动本地开发服务
-启动热更新开发服务器：
+### 3. Start Development Server
+Launch the development server with Hot Module Replacement (HMR):
 ```bash
 npm run dev
 ```
-启动后在浏览器中打开命令行中输出的地址即可（通常为 `http://localhost:5173/`）。
+Open the output URL in your browser (usually `http://localhost:5173/`).
 
-### 4. 项目打包编译
-要发布到服务器时，生成纯静态资产文件：
+### 4. Build for Production
+Compile optimized static files for production hosting:
 ```bash
 npm run build
 ```
-编译生成的文件会存放在根目录的 `dist/` 文件夹中。这些是完全自包含的静态 HTML、CSS 和 JS 文件。
+The compiled assets will be saved inside the `dist/` directory, containing self-contained, clean HTML, CSS, and JS files.
 
 ---
 
-## 🚀 部署发布指南
+## 🚀 Deployment Guide
 
-### 一、 部署到 GitHub Pages (最推荐的免费静态托管)
+### I. Deploy to GitHub Pages (Recommended Free Static Hosting)
 
-GitHub 提供免费的静态网页托管服务。你可以配置一个 GitHub Actions 自动构建或使用 `gh-pages` 工具部署。
+GitHub Pages provides free static website hosting. You can easily publish using the `gh-pages` package.
 
-#### 方法 A：使用 `gh-pages` 包（最简单）
+#### Steps:
 
-1. **配置 `vite.config.js`**：
-   如果你部署到 `https://<用户名>.github.io/<项目名>/` 下，请修改项目根目录的 `vite.config.js` 文件，增加 `base` 路径：
+1. **Configure `vite.config.js`**:
+   Verify that `base` is configured to relative paths (`./`) so assets resolve correctly in subdirectories:
    ```javascript
    import { defineConfig } from 'vite'
    import react from '@vitejs/plugin-react'
 
-   // https://vite.dev/config/
    export default defineConfig({
      plugins: [react()],
-     base: './', // 设为相对路径，这样项目在任何子目录下都可以正常运行
+     base: './', 
    })
    ```
 
-2. **安装 gh-pages 工具**：
-   ```bash
-   npm install gh-pages --save-dev
-   ```
-
-3. **配置部署脚本**：
-   在 `package.json` 的 `"scripts"` 部分添加下面两个脚本：
+2. **Deploy script**:
+   Make sure you have `gh-pages` installed and added to your `package.json` scripts:
    ```json
    "predeploy": "npm run build",
    "deploy": "gh-pages -d dist"
    ```
 
-4. **执行部署**：
-   在终端执行：
+3. **Deploy**:
+   Execute the deploy command in your terminal:
    ```bash
    npm run deploy
    ```
-   工具会自动把打包好的 `dist/` 目录推送到你 GitHub 仓库的 `gh-pages` 分支，并在几分钟内在线发布。
+   This compiles the project and pushes the output `dist/` directory to the `gh-pages` branch of your GitHub repository.
 
 ---
 
-### 二、 部署到 Hostinger (共享虚拟主机)
+### II. Deploy to Hostinger (Shared Hosting)
 
-Hostinger 的共享主机托管非常适合静态网页。
+Hostinger's shared web hosting is ideal for deploying the compiled static build.
 
-#### 1. 打包项目
-在本地根目录下运行打包命令：
+#### 1. Compile the build
+Run the build script in your terminal:
 ```bash
 npm run build
 ```
-这会在根目录下生成 `dist` 文件夹。
+This generates the optimized `dist` folder.
 
-#### 2. 上传到 Hostinger
-1. 登录到你的 **Hostinger hPanel**。
-2. 导航到 **File Manager (文件管理器)**。
-3. 进入你网站的域名根目录目录（通常是 `public_html`）。
-4. 将本地 `dist/` 文件夹内的**所有内容**（包括 `index.html`、`assets/` 文件夹等）上传到 `public_html` 目录中。
-   - *提示*：为了加快上传速度，你可以先在本地将 `dist` 目录下的内容压缩成一个 `.zip` 文件，上传到 Hostinger 之后再在 File Manager 中直接在线解压。
-5. 访问你的域名，即可看到收藏夹网页正常工作。
+#### 2. Upload to Hostinger
+1. Log in to your **Hostinger hPanel**.
+2. Navigate to **File Manager**.
+3. Enter your website's root directory (usually `public_html`).
+4. Upload all files and folders from inside the local `dist/` folder directly to the host directory.
+   - *Tip*: You can compress the contents of `dist` into a `.zip` file, upload it, and use the online File Manager extraction tool to unpack it.
+5. Visit your domain to verify the application is live and running.
 
 ---
 
-## 📄 许可声明
+## 📄 License
 
-本项目基于 MIT 协议开源。
+This project is open-source under the MIT License.
