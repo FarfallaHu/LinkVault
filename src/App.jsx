@@ -93,12 +93,10 @@ function Favicon({ url, title }) {
   }
 
   // Tiered sources:
-  // 1. Classic Google Favicon service (highly robust subdomain caching)
-  // 2. Google Chrome High-Res FaviconV2 API (Retina quality 128x128)
-  // 3. Direct favicon.ico from website root
-  // 4. DuckDuckGo API (alternative fallback)
+  // 1. Google Chrome High-Res FaviconV2 API (Retina quality 128x128)
+  // 2. Direct favicon.ico from website root
+  // 3. DuckDuckGo API (alternative fallback)
   const sources = [
-    `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
     `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=128`,
     `https://${domain}/favicon.ico`,
     `https://icons.duckduckgo.com/ip3/${domain}.ico`
