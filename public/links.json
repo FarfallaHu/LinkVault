@@ -31,7 +31,7 @@
     "id": "1",
     "url": "https://github.com",
     "title": "GitHub",
-    "starred": false,
+    "starred": true,
     "createdAt": "2026-06-04T22:00:00.000Z"
   },
   {
@@ -52,7 +52,7 @@
     "id": "4",
     "url": "https://notion.so",
     "title": "Notion",
-    "starred": false,
+    "starred": true,
     "createdAt": "2026-06-09T16:00:00.000Z"
   },
   {
