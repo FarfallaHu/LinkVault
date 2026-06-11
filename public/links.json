@@ -1,5 +1,12 @@
 [
   {
+    "id": "1781151198099",
+    "url": "https://elevenlabs.io/",
+    "title": "Elevenlabs",
+    "starred": false,
+    "createdAt": "2026-06-11T04:13:18.099Z"
+  },
+  {
     "id": "1781145138711",
     "url": "https://higgsfield.ai/",
     "title": "Higgsfield",
@@ -533,5 +540,19 @@
     "title": "Labs",
     "starred": false,
     "createdAt": "2026-06-10T06:15:55.219Z"
+  },
+  {
+    "id": "1781145838515",
+    "url": "https://www.skool.com/aiworkshop-lite/about",
+    "title": "Skool",
+    "starred": false,
+    "createdAt": "2026-06-11T02:43:58.515Z"
+  },
+  {
+    "id": "1781145769150",
+    "url": "https://www.skool.com/",
+    "title": "Skool",
+    "starred": false,
+    "createdAt": "2026-06-11T02:42:49.150Z"
   }
 ]
