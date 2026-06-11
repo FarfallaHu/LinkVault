@@ -1,5 +1,40 @@
 [
   {
+    "id": "1781157271002",
+    "url": "https://openrouter.ai",
+    "title": "Openrouter",
+    "starred": false,
+    "createdAt": "2026-06-11T05:54:31.002Z"
+  },
+  {
+    "id": "1781157121917",
+    "url": "https://cline.bot/",
+    "title": "Cline",
+    "starred": false,
+    "createdAt": "2026-06-11T05:52:01.917Z"
+  },
+  {
+    "id": "1781157095977",
+    "url": "https://cursor.com/",
+    "title": "Cursor",
+    "starred": false,
+    "createdAt": "2026-06-11T05:51:35.977Z"
+  },
+  {
+    "id": "1781157034580",
+    "url": "https://devin.ai/",
+    "title": "Devin",
+    "starred": false,
+    "createdAt": "2026-06-11T05:50:34.580Z"
+  },
+  {
+    "id": "1781152165375",
+    "url": "https://nexos.ai/",
+    "title": "Nexos",
+    "starred": false,
+    "createdAt": "2026-06-11T04:29:25.375Z"
+  },
+  {
     "id": "1781151198099",
     "url": "https://elevenlabs.io/",
     "title": "Elevenlabs",
