@@ -757,6 +757,16 @@ function App() {
                   <Plus size={16} />
                   Add
                 </button>
+
+                <button 
+                  type="button" 
+                  className="btn-secondary"
+                  onClick={handleCloudSync}
+                  style={{ color: 'var(--primary)' }}
+                >
+                  <RefreshCw size={13} />
+                  Sync to Cloud
+                </button>
               </div>
             </form>
           </section>
